@@ -1,5 +1,5 @@
 
--- Data cleaning small project: we have data about housing in usa city, we're gonna focus on make it readable
+-- Data cleaning small project: we have data about housing State in the USA, we're gonna focus on make it readable
 ----------------------------------------------------------------------------------------------------------
 -- showing everything in the data base 
 select * from NashvileHousing
