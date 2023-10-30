@@ -1,5 +1,5 @@
 # Data-cleaning
-#A SQL project for data cleaning purposes 
+#An SQL project for data cleaning purposes 
 
 
 -- Data cleaning small project: we have data about housing in usa city, we're gonna focus on make it readable
