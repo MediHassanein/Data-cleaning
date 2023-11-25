@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace $safeprojectname$
+{
+    public partial class Form4 : Form
+    {
+        private List<string> students;
+        private int currentIndex;
+
+        public Form4()
+        {
+            InitializeComponent();
+            students = File.ReadAllLines("Students.txt").ToList();
+            currentIndex = 0;
+            ShowStudentData();
+        }
+
+        private void nextBtn_Click(object sender, EventArgs e)
+        {
+            currentIndex = (currentIndex + 1) % students.Count;
+            ShowStudentData();
+        }
+
+        private void prevBtn_Click(object sender, EventArgs e)
+        {
+            currentIndex = (currentIndex - 1 + students.Count) % students.Count;
+            ShowStudentData();
+        }
+
+        private void backBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            string searchNationality = searchTextBox.Text.ToLower();
+
+            List<int> matchingIndices = students
+                .Select((student, index) => new { student, index })
+                .Where(x => x.student.ToLower().Contains(searchNationality))
+                .Select(x => x.index)
+                .ToList();
+
+            if (matchingIndices.Count == 0)
+            {
+                ClearLabels();
+            }
+            else
+            {
+                currentIndex = matchingIndices[0];
+                ShowStudentData();
+            }
+        }
+
+        private void ShowStudentData()
+        {
+            if (students.Count > 0)
+            {
+                string[] studentInfo = students[currentIndex].Split(';');
+                nameLabel.Text = $"Name: {studentInfo[0]}";
+                lastNameLabel.Text = $"Last Name: {studentInfo[1]}";
+                fatherNameLabel.Text = $"Father Name: {studentInfo[2]}";
+                dobLabel.Text = $"Date of Birth: {studentInfo[3]}";
+                nationalityLabel.Text = $"Nationality: {studentInfo[4]}";
+                countLabel.Text = $"{currentIndex + 1} of {students.Count} students";
+            }
+            else
+            {
+                ClearLabels();
+            }
+        }
+
+        private void ClearLabels()
+        {
+            nameLabel.Text = "";
+            lastNameLabel.Text = "";
+            fatherNameLabel.Text = "";
+            dobLabel.Text = "";
+            nationalityLabel.Text = "";
+            countLabel.Text = "No matching students found";
+        }
+    }
+}
